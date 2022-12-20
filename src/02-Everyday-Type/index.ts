@@ -42,5 +42,21 @@ printCoord({x: 3, y: 7});
 // but you know that your page will always have an HTMLCanvasElement with this given id.
 //  => Use type assertions (as) to specify a more specific type
 const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+// Type assertions (as) are removed by compiler and won't affect the runtime behaviour of your code.
+// Another syntax for type assertions:
+const myCanvas2 = <HTMLCanvasElement>document.getElementById("main_canvas");
+
+// Literal Inference
+// https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-inference
+// When initial an object, TS will assume that the properties of that object might change later.
+const obj = {
+    counter: 0 // Count is a `number` but not type literal 0
+};
+if (someCondition) {
+    obj.counter = 1;
+}
+// Convert an object to type literal
+const req = {url: "https://example.com", method: "GET"} as const;
+
 
 export default {};
