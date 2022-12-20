@@ -36,4 +36,11 @@ printCoord({x: 3, y: 7});
 // Differences Between Type Aliases and Interfaces
 // https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces
 
+// Type assertions
+// When you know the type of the value that TS doesn't know about
+// Ex: When you call document.getElementById("main_canvas"), TS only knows that this will return some kind of HTMLElement,
+// but you know that your page will always have an HTMLCanvasElement with this given id.
+//  => Use type assertions (as) to specify a more specific type
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+
 export default {};
