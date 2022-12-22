@@ -26,6 +26,33 @@ function printAll(strs: string | string[] | null) {
 // Equality narrowing
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#equality-narrowing
 // TypeScript also uses switch statements and equality checks like ===, !==, ==, and != to narrow types. For example:
+function equalityNarrowing(x: string | number, y: string | boolean) {
+    if (x === y) {
+        // Because of strict equal check, x and y must have the same type to continue the flow.
+        //  => x & y have type `string` in common.
+        //  => When x & y are equal type => Both are `string`.
+        console.log(x);
+        console.log(y);
+    } else {
+        console.log(x);
+        console.log(y);
+    }
+}
+
+// JavaScript’s looser equality checks with == and != also get narrowed correctly.
+// checking whether something == null actually not only checks whether it is specifically the value null -
+// it also checks whether it’s  potentially undefined.
+// The same applies to == undefined: it checks whether a value is either null or undefined.
+interface Container {
+    value: number | null | undefined
+}
+
+function multipleValue(container: Container, factor: number) {
+    // Remove both `null` and `undefined` from the type
+    if (container.value != null) {
+        console.log(container.value); // container.value is now of type `number`
+    }
+}
 
 // The `in` operator narrowing
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-in-operator-narrowing
