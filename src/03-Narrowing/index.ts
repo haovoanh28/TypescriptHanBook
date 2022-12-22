@@ -155,4 +155,38 @@ const underWater2: Fish[] = zoo.filter(isFish) as Fish[];
 // In addition, classes can use `this is Type` to narrow their type
 // https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
 
+// Discriminated unions
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
+// When we know more about the value than the type checker does.
+
+// The problem with this is that type-checker doesn't have any way to know whether
+// `radius` or `sideLength` are present based on `kind` property.
+interface Shape {
+    kind: "circle" | "square";
+    radius?: number;
+    sideLength?: number;
+}
+
+interface ICircle {
+    kind: "circle";
+    radius: number;
+}
+
+interface ISquare {
+    kind: "square";
+    sideLength: number;
+}
+
+type Shape2 = ICircle & ISquare;
+
+function handleShape(shape: Shape) {
+    if (shape.kind == "circle") {
+
+        // We need to tell type-checker about that,
+        // let's implement it.
+        return Math.PI * shape.radius ** 2;
+    }
+}
+
+
 export default {};
