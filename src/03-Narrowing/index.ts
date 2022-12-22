@@ -44,7 +44,7 @@ function equalityNarrowing(x: string | number, y: string | boolean) {
 // it also checks whether it’s  potentially undefined.
 // The same applies to == undefined: it checks whether a value is either null or undefined.
 interface Container {
-    value: number | null | undefined
+    value: number | null | undefined;
 }
 
 function multipleValue(container: Container, factor: number) {
@@ -103,5 +103,56 @@ let x = Math.random() < 0.5 ? 10 : "random";
 x = 5; // number can be assigned to x because it's part of the declared type
 x = "3"; // string can be assigned to x because it's part of the declared type
 x = false; // but boolean can't because it isn't part of the declared type
+
+// Control flow analysis
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html#control-flow-analysis
+// TS narrows type as it encounters type guards and assignments.
+function controlFlowAnalysisExample() {
+    let x: number | string | boolean;
+    x = Math.random() < 5;
+    console.log(x); // x is boolean;
+
+    if (Math.random() > 1) {
+        x = 5;
+        console.log(x);
+    } else {
+        x = "some string";
+        console.log(x);
+    }
+
+    // x is number | string, miss boolean. Why ?
+    // Because on the above `if` branch, there are 2 case that can change the value of x
+    //  => It's either a number or a string => x is of type number | string
+    return x;
+}
+
+// Type predicates
+// https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+// It's user-defined type guard: A function whose return is a TYPE PREDICATE.
+// `pet is Fish` is type predicate. It's in form `parameterName is Type`,
+// where `parameterName` must be the name of parameter from the current function signature.
+
+declare function getSmallPet(): Fish | Bird;
+
+function isFish(pet: Fish | Bird): pet is Fish {
+    return (pet as Fish).swim !== undefined;
+}
+
+let myPet = getSmallPet();
+
+if (isFish(myPet)) {
+    // pet is Fish
+    console.log(myPet.swim);
+} else {
+    // pet is Bird
+    console.log(myPet.fly);
+}
+
+const zoo: (Fish | Bird)[] = [getSmallPet(), getSmallPet(), getSmallPet()];
+const underWater1: Fish[] = zoo.filter(isFish);
+// or
+const underWater2: Fish[] = zoo.filter(isFish) as Fish[];
+// In addition, classes can use `this is Type` to narrow their type
+// https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards
 
 export default {};
