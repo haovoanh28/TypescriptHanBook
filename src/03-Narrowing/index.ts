@@ -179,7 +179,13 @@ interface ISquare {
     sideLength: number;
 }
 
-type Shape2 = ICircle | ISquare;
+interface ITriangle {
+    kind: "triangle";
+    sideLength: number;
+
+}
+
+type Shape2 = ICircle | ISquare | ITriangle;
 
 function handleShape1(shape: Shape1) {
     if (shape.kind == "circle") {
@@ -205,6 +211,9 @@ function handleShape2(shape: Shape2) {
         case "square":
             console.log(shape.sideLength);
             break;
+        default:
+            const _exhaustiveCheck: never = shape; // Missing handler for some cases
+            return _exhaustiveCheck;
     }
 }
 
