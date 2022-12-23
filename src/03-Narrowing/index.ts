@@ -181,7 +181,6 @@ type Shape2 = ICircle & ISquare;
 
 function handleShape(shape: Shape) {
     if (shape.kind == "circle") {
-
         // We need to tell type-checker about that,
         // let's implement it.
         return Math.PI * shape.radius ** 2;
