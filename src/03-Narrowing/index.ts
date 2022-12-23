@@ -157,33 +157,54 @@ const underWater2: Fish[] = zoo.filter(isFish) as Fish[];
 
 // Discriminated unions
 // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
-// When we know more about the value than the type checker does.
+// When every type in a union has a common property with literal types => TS marks it as `discriminated unions`
+// => Narrow out the member of union
 
 // The problem with this is that type-checker doesn't have any way to know whether
 // `radius` or `sideLength` are present based on `kind` property.
-interface Shape {
+interface Shape1 {
     kind: "circle" | "square";
     radius?: number;
     sideLength?: number;
 }
 
+// Tell type-checker what we know.
 interface ICircle {
-    kind: "circle";
+    kind: "circle"; // discriminant property
     radius: number;
 }
 
 interface ISquare {
-    kind: "square";
+    kind: "square"; // discriminant property
     sideLength: number;
 }
 
-type Shape2 = ICircle & ISquare;
+type Shape2 = ICircle | ISquare;
 
-function handleShape(shape: Shape) {
+function handleShape1(shape: Shape1) {
     if (shape.kind == "circle") {
-        // We need to tell type-checker about that,
-        // let's implement it.
-        return Math.PI * shape.radius ** 2;
+        // TS doesn't know radius will belong to kind circle
+        //  1. Check undefine for radius (It's BAD because it can cause error-prone since the shape also can access property `sideLength`).
+        //  2. Refactor type Shape.
+        console.log(Math.PI * shape.radius ** 2);
+        console.log(Math.PI * shape.sideLength ** 2); // We can access sideLength although the kind is circle.
+    }
+}
+
+function handleShape2(shape: Shape2) {
+    if (shape.kind == "circle") {
+        // Now the error is gone and we can only access `radius`.
+        console.log(Math.PI * shape.radius ** 2);
+    }
+
+    // Another way
+    switch (shape.kind) {
+        case "circle":
+            console.log(shape.radius);
+            break;
+        case "square":
+            console.log(shape.sideLength);
+            break;
     }
 }
 
