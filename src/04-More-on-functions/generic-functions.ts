@@ -37,4 +37,13 @@ const longestStr = findLongest("123", "1234");
 // Because numbers don't have a `length` property => Cause error
 const notOk = findLongest(10, 100);
 
+// Working with constraint value
+function findMinimumLength<T extends { length: number }>(obj: T, minimum: number): T {
+    if (obj.length >= minimum) {
+        return obj;
+    } else {
+        return {length: minimum};
+    }
+}
+
 export default {};
