@@ -42,8 +42,56 @@ function findMinimumLength<T extends { length: number }>(obj: T, minimum: number
     if (obj.length >= minimum) {
         return obj;
     } else {
+        // Type '{ length: number; }' is not assignable to type 'T'. { length: number; }' is assignable to the constraint of type 'T',
+        // but 'T' could be instantiated with a different subtype of constraint '{ length: number; }'.
+        // Basically, i
         return {length: minimum};
     }
 }
+
+// Specifying Type Arguments
+// https://www.typescriptlang.org/docs/handbook/2/functions.html#specifying-type-arguments
+// When TS can't infer the intended type arguments in a generic call,
+// we need to specify it.
+function combine<T>(arr1: T[], arr2: T[]): T[] {
+    return arr1.concat(arr2);
+}
+
+// TS inferred type argument to number, which we don't want it.
+const combineArr = combine([1, 2, 3], ["hello"]);
+// Manually specify <T>
+const combineArr2 = combine<string | number>([1, 2, 3], ["aaa", "bbb"]);
+
+// Guidelines for writing good generic functions
+
+// 1. Push Type Parameter Down
+// Rule: When possible, use the type parameter itself rather than constraining it
+function firstElement1<T>(arr: T[]) { // good
+    return arr[0];
+}
+
+function firstElement2<T extends any[]>(arr: T) { // bad
+    return arr[0];
+}
+
+const a = firstElement1([1, 2, 3]);
+// TS infers return type as `any` because it resolves arr[0] expression
+// using the constraint type, rather than 'waiting' to resolve the type that we passed in during the call.
+const b = firstElement2([1, 2, 3]);
+
+// 2. Use Fewer Type Parameters
+// Rule: Always use as few type parameters as possible
+function filter1<T>(arr: T[], func: (arg: T) => boolean): T[] { // good
+    return arr.filter(func);
+}
+
+function filter2<T, F extends (arg: T) => boolean>(arr: T[], func: F): T[] { // bad
+    // F doesn’t do anything but make the function harder to read and reason about!
+    return arr.filter(func);
+}
+
+// 3. Type parameters should appear twice
+// Rule: If a type parameter only appears in one location, strongly reconsider if you actually need it
+
 
 export default {};

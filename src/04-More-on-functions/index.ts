@@ -19,7 +19,7 @@ function doSomething(fn: DescriptableFunction) {
     console.log(fn.description + " return " + fn(6));
 }
 
-// Construct signature
+// Construct Signatures
 // https://www.typescriptlang.org/docs/handbook/2/functions.html#construct-signatures
 // Signature for constructor
 type SomeObject = any;
@@ -35,5 +35,8 @@ type CallOrConstruct = {
     new(s: string): Date;
     (n?: number): number;
 }
+
+// Optional Parameters
+
 
 export default {};
