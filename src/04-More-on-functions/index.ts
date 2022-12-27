@@ -36,7 +36,4 @@ type CallOrConstruct = {
     (n?: number): number;
 }
 
-// Optional Parameters
-
-
 export default {};
