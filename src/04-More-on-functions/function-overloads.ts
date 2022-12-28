@@ -46,10 +46,56 @@ function fn3(x: string | number): string | boolean {
     }
 
     return false;
-
 }
 
 // Writing Good Overloads
+// https://www.typescriptlang.org/docs/handbook/2/functions.html#writing-good-overloads
 
+// 01 - Always prefer parameters with union types instead of overloads when possible
+function len(s: string): number;
+function len(arr: any[]): number;
+function len(x: any) {
+    return x.length;
+}
+
+// This function is fine; we can invoke it with strings or arrays.
+// However, we can’t invoke it with a value that might be a string or an array,
+// because TypeScript can only resolve a function call to a single overload:
+len(""); // OK
+len([0]); // OK
+len(Math.random() > 0.5 ? "hello" : [0]);
+
+// Because both overloads have the same argument count and same return type, we can instead write a non-overloaded version of the function:
+function len2(x: any[] | string) {
+    return x.length;
+}
+
+// 02 - Declaring `this` in a Function
+// When you need more control over what object `this` represents.
+const user = {
+    id: 123,
+
+    admin: false,
+    becomeAdmin: function () {
+        this.admin = true;
+    },
+};
+
+interface User {
+    id: number;
+    admin: boolean;
+}
+
+declare function getDB(): DB;
+
+interface DB {
+    filterUsersAdmin(filter2: (this: User) => boolean): User[];
+}
+
+const db = getDB();
+// Note that you need to use `function` not arrow function to get this behavior
+const admins = db.filterUsersAdmin(function () {
+    return this.admin;
+});
 
 export default {};

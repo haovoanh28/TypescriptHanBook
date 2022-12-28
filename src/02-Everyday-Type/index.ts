@@ -1,7 +1,7 @@
 // Union Types
 // Each type in union is called a union member
 function printId(id: number | string) {
-    console.log("Your ID is: " + id)
+    console.log("Your ID is: " + id);
 
     // TS will only allow operation if it is valid for EVERY MEMBER of the union.
     // Because of .toUpperCase() only available on `string`, it will cause error.
