@@ -258,5 +258,4 @@ function distanceFromOrigin([x, y]: [number, number]) {
 // point is `readonly. So it won't be compatible with [number, number]
 // To fix this, change argument to [x, y]: readonly [number, number]
 distanceFromOrigin(point);
-
 export default {};
