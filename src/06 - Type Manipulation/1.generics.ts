@@ -12,10 +12,13 @@ function identity2<T>(arg: T): T {
 }
 
 interface GenericIdentityFn<T> {
-    (arg: T): T;
+    <T>(arg: T): T;
 }
 
 let myIdentity1: GenericIdentityFn<string> = identity2;
+let myIdentity2: GenericIdentityFn<number> = identity2; // call signature of an object literal type
+
+myIdentity2(3);
 
 // Generic Constrain
 // https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints
