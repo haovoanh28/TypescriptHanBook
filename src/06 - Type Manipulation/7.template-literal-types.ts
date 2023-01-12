@@ -7,4 +7,6 @@ type AllLocaleIDs = `${EmailLocaleIDs | FooterLocaleIDs}_id`;
 type Lang = "en" | "ja" | "pt";
 
 type LocaleMessageIDs = `${Lang}_${AllLocaleIDs}`;
+
+// The power in template literals comes when defining a new string based on information inside a type.
 export default {};
